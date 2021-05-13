@@ -1,0 +1,11 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
+
+<li class="media">
+    <div class="media-body">
+        <span class="text-muted pull-right">
+            <strong class="text-success"><%= message.sender_id == user.id ? "Me" : `${message.sender_first_name} ${message.sender_last_name}` _%></strong>
+            <small class="text-muted float-right form-text" align="right"><%= moment(message.date_created).format("llll") _%></small>
+            <p><%= message.mes_content _%></p>
+        </span>
+    </div>
+</li>

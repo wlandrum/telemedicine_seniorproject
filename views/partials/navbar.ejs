@@ -1,0 +1,63 @@
+<style>
+  .badge {
+    background-color: blue;
+  }
+</style>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand/logo -->
+    <div class="navbar-header">
+      <button
+        type="button"
+        class="navbar-toggle collapsed"
+        data-toggle="collapse"
+        data-target="#example-1"
+        aria-expanded="false"
+      >
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Senior Project Group 5A</a>
+    </div>
+
+    <!-- Collapsible Navbar -->
+    <div class="collapse navbar-collapse" id="example-1">
+      <ul class="nav navbar-nav" style="width: calc(100% - 15em);">
+        <li id="home">
+          <a href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <% if (!user) {%> 
+        <li class="navbar-right" id="login"><a href="/login">Login</a></li>
+        <% } else { %> 
+        <li id="calendar"><a href="/calendar">Calendar</a></li>
+        <% if (user.type === "doctor") { %>
+          <li id="agenda"><a href="/agenda">Agenda</a></li>
+        <% } %>  
+        <li id="conference"><a href="/conference">Web Conference</a></li>
+        <li id="messages"><a href="/messages">Messages</a></li>
+        <span class="badge badge-success" id="unread"></span>
+        
+        <li class="dropdown navbar-right" role="presentation">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Welcome, <%= user.first_name[0].toUpperCase() + user.first_name.slice(1).toLowerCase() %>! <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="/account">Settings</a></li>
+            <li><a href="#" id="logout">Logout</a></li>
+          </ul>
+        </li>
+        <% } %> 
+
+    </div>
+  </div>
+</nav>
+
+<script>
+  $(`#${"<%= typeof active === 'string' ? active : '' %>" || document.title.toLowerCase().split(' ')[0]}`).addClass('active')
+  const loadUnreadBadge = () => {$.ajax({url: "/api/messages/unread", method: "get"}).done(({countUnread}) => {
+    document.getElementById("unread").innerText = countUnread;
+  })}
+  loadUnreadBadge()
+</script>

@@ -1,0 +1,410 @@
+<%- include('partials/header.ejs', {title: "Agenda", styles: ["test"], active:
+"home"}) %>
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
+<body>
+  <!-- <link
+    href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+    rel="stylesheet"
+    id="bootstrap-css"
+  />
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
+  <!------ Include the above in your HEAD tag ---------->
+
+  <div class="container">
+    <h2>Agenda</h2>
+    <p class="lead">
+      This agenda viewer will let you see multiple events cleanly!
+    </p>
+    <hr />
+    <!-- <p id="showingDisplay">Currently Showing All Events</p> -->
+    <p>
+      <button class="btn btn-primary" id="previous">Previous week</button>
+      <button class="btn btn-primary" id="next">Next Week</button>
+    </p>
+    <!-- <select name="" id="weekSelector">
+
+    </select> -->
+    <div class="agenda">
+      <div class="table-responsive">
+        <table
+          id="agendaMasterTable"
+          class="table table-condensed table-bordered"
+        >
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Event</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody id="agendaTable">
+            <!-- Single event in a single day -->
+            <!-- <tr>
+              <td class="agenda-date" class="active" rowspan="1">
+                <div class="dayofmonth">26</div>
+                <div class="dayofweek">Saturday</div>
+                <div class="shortdate text-muted">July, 2014</div>
+              </td>
+              <td class="agenda-time">5:30 AM</td>
+              <td class="agenda-events">
+                <div class="agenda-event">
+                  <i
+                    class="glyphicon glyphicon-repeat text-muted"
+                    title="Repeating event"
+                  ></i
+                  >Â  Fishing
+                </div>
+              </td>
+            </tr> -->
+
+            <!-- Multiple events in a single day (note the rowspan) -->
+            <!-- <tr>
+              <td class="agenda-date" class="active" rowspan="3">
+                <div class="dayofmonth">24</div>
+                <div class="dayofweek">Thursday</div>
+                <div class="shortdate text-muted">July, 2014</div>
+              </td>
+              <td class="agenda-time">8:00 - 9:00 AM</td>
+              <td class="agenda-events">
+                <div class="agenda-event">Doctor's Appointment</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="agenda-time">10:15 AM - 12:00 PM</td>
+              <td class="agenda-events">
+                <div class="agenda-event">Meeting with executives</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="agenda-time">7:00 - 9:00 PM</td>
+              <td class="agenda-events">
+                <div class="agenda-event">Aria's dance recital</div>
+              </td>
+            </tr> -->
+          </tbody>
+        </table>
+
+        <button
+          id="newEvent"
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#addModal"
+        >
+          Add New Event
+        </button>
+
+        <button
+          id="newEvent"
+          type="button"
+          class="btn btn-danger"
+          data-toggle="modal"
+          data-target="#deleteModal"
+        >
+          Delete Event
+        </button>
+      </div>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="deleteModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Delete Event</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="delete_form" action="" method="DELETE">
+                <select
+                  name="eventId"
+                  id="delete_event_selection"
+                  class="form-select"
+                  aria-label="Default select example"
+                >
+                  <option selected>Select A Event to Delete</option>
+                </select>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="confirm_delete"
+                    onclick="getSelectedItem()"
+                  >
+                    Confirm Deletion
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal fade"
+        id="addModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add Event</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="dropdown">
+                <br />
+                To add an event for a future date, use the calendar.
+                <br />
+
+                <form
+                  id="event-form"
+                  action="/api/events"
+                  method="POST"
+                  role="form"
+                >
+                  <label for="cal">Select a date:</label>
+                  <input
+                    class="flatpickr"
+                    name="datetime"
+                    type="text"
+                    placeholder="Select Date.."
+                    data-id="altinput"
+                  />
+                  <br />
+                  <label for="duration">Duration (minutes): </label>
+                  <input
+                    type="number"
+                    id="duration"
+                    name="duration"
+                    value="30"
+                    min="30"
+                    max="90"
+                    step="30"
+                  />
+                  <br />
+                  Event Name:<input type="text" name="name" id="name" />
+                  Description:<input
+                    type="text"
+                    name="description"
+                    id="description"
+                  />
+                  <button id="newEventButton" type="" class="btn btn-primary">
+                    Confirm New Event
+                  </button>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var val = 0;
+    document.getElementById("previous").addEventListener("click", function () {
+      val -= 1;
+      show(val);
+    });
+
+    document.getElementById("next").addEventListener("click", function () {
+      val += 1;
+      show(val);
+    });
+
+    function show(val) {
+      $.ajax({ url: "/api/events", method: "get" }).done((data) => {
+        var testdata = data;
+        var dropdown = document.getElementById("delete_event_selection");
+
+        var sortedActivities = data.sort(
+          (a, b) => new Date(b.datetime) - new Date(a.datetime)
+        );
+
+        var reversedCopy = sortedActivities.reverse();
+        reversedCopy.forEach((testdata) => {
+          var option = document.createElement("option");
+          option.text = testdata.name;
+          option.value = testdata.event_id;
+          dropdown.appendChild(option);
+        });
+        // document.getElementById('weekSelector').
+        var agendaTable = document.getElementById("agendaTable");
+        var temp_event;
+        var temp_datetime = "";
+
+        var new_tbody = document.getElementById("agendaTable");
+        new_tbody.innerHTML = " ";
+
+        data.forEach((event) => {
+          var tr = document.createElement("tr");
+          var td = document.createElement("td");
+          td.classList.add("agenda-date", "active");
+          td.classList.add(event.datetime);
+          td.rowSpan = 1;
+          var div1 = document.createElement("div");
+          div1.classList.add("dayofmonth");
+          date = moment(event.datetime);
+          div1.innerHTML = date.format("llll").slice(0, 18);
+
+          var temp = new Date(event.datetime);
+          var today = new Date();
+          // console.log(temp>=today);
+
+          let first = new Date(today);
+          first.setDate(first.getDate() + val * 7);
+          let last = new Date(first);
+          last.setDate(first.getDate() + 6);
+
+          // var firstday = today.getDate() - (today.getDay() - 1) + val * 7;
+          // var lastday = firstday + 6;
+
+          // var first = new Date(today.setDate(firstday));
+          // var last = new Date(today.setDate(lastday));
+          // console.log(first,temp, last);
+
+          temp = temp.getTime();
+          first = first.getTime();
+          last = last.getTime();
+
+          if (temp >= first && temp <= last) {
+            var div1 = document.createElement("div");
+            div1.classList.add("dayofmonth");
+            date = moment(event.datetime);
+            div1.innerHTML = date.format("llll").slice(0, 18);
+
+            var td3 = document.createElement("td");
+            td3.classList.add("agenda-event");
+            td3.innerHTML = event.name;
+            td3.id = event.name;
+            td3.classList.add(event.datetime);
+
+            var td4 = document.createElement("td");
+            td4.classList.add("agenda-event");
+            td4.innerHTML = event.description;
+            td4.classList.add(event.datetime);
+
+            var td2 = document.createElement("td");
+            td2.classList.add("agenda-event");
+            td2.innerHTML = date.format("llll").slice(18);
+            td2.classList.add(event.datetime);
+
+            td.appendChild(div1);
+            tr.appendChild(td);
+
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            tr.appendChild(td4);
+
+            agendaTable.appendChild(tr);
+          }
+        });
+      });
+    }
+
+    show(0);
+
+    // load existing events
+
+    function getSelectedItem() {
+      var select = document.getElementById("delete_event_selection");
+      var eventId = select.value;
+      // document.getElementById('delete_form').action = `/api/events/${event_id}`;
+      // document.getElementById('delete_form').method = `DELETE`;
+      // document.getElementById('delete_form').submit();
+
+      $.ajax({
+        url: `/api/events/${eventId}`,
+        method: "DELETE",
+      })
+        .done((data) => {
+          console.log(data);
+        })
+        .fail(({ responseJSON: { errors } }) => {
+          errors.forEach(console.log);
+        });
+      // document.getElementById("delete_form").submit()
+    }
+
+    const fp = flatpickr(".flatpickr", {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i",
+      altInput: true,
+      altFormat: "m/d/Y h:i K",
+
+      minDate: "today",
+      minTime: "09:00",
+      maxTime: "16:30",
+
+      disable: [
+        // function (date) {
+        //   return date.getDay() === 0 || date.getDay() === 6;
+        // },
+        (date) => date.getDay() === 0 || date.getDay() === 6,
+      ],
+    });
+
+    $("form").submit(function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: $(this).attr("action"),
+        method: $(this).attr("method"),
+        data: $(e.target).serializeArray(),
+      })
+        .done(console.log)
+        .fail(console.error);
+      location.reload();
+    });
+    // });
+  </script>
+
+  <%- include('partials/footer.ejs') %>
+</body>

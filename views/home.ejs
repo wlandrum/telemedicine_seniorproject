@@ -1,0 +1,37 @@
+<%- include('partials/header.ejs', {title: "Home Page", styles: ["home"],
+active: "home"}) %>
+<body>
+  <h1>Welcome!</h1>
+  <div id="pic">
+    <img src ="/images/telemedicine.jpg" alt="banner">
+  </div>
+  <div id="intro">
+    <h4>
+      This is a web portal that can be used by patients and doctors
+      to communicate with each other. Patients have access to a calendar to
+      schedule appointments, web conferecing, and a messaging
+      system to communicate with their doctor.
+    </h4><br />
+    <h4>
+      Doctors also have access to these features and can also view an agenda page
+      that shows all the appointments and other events that are scheduled for the
+      current week.
+    </h4><br/>
+      <% if (!user) {%>
+        <div style="text-align: center">
+          <a href="/login" class="introLink">
+            <h4 class="center">Login</h4>
+          </a>
+        </div>
+      <% } %>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <p class="center">
+      This website is HIPAA Compliant under the guidelines set forth by the Health
+      Insurance Portability and Accountability Act of 1996.
+    </p>
+    <img id="HIPAA" src="https://www.compliancepoint.com/wp-content/uploads/2020/05/HIPAA-Compliant-logo.png"
+     alt="HIPAA Compliant" width="137" height="63" align='center'>
+  </div>
+</body>
+
+<%- include('partials/footer.ejs') %>

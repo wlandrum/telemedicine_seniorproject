@@ -1,0 +1,722 @@
+<%- include('partials/header.ejs', {title: "Calendar", styles:
+["home","calendar"], active: "calendar"}) %>
+
+
+<style>
+  .clearfix::after,
+.calendar ol::after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+/* ================
+Calendar Styling */
+.calendar {
+  border-radius: 10px;
+}
+
+.month {
+  font-size: 2rem;
+}
+
+@media (min-width: 992px) {
+  .month {
+    font-size: 3.5rem;
+  }
+}
+
+.calendar ol li {
+  float: left;
+  width: 14.28571%;
+}
+
+.calendar .day-names {
+  border-bottom: 1px solid #eee;
+}
+
+.calendar .day-names li {
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.calendar .days li {
+  border-bottom: 1px solid #eee;
+  min-height: 8rem;
+}
+
+.calendar .days li .date {
+  margin: 0.5rem 0;
+}
+
+.calendar .days li .event {
+  font-size: 0.75rem;
+  padding: 0.4rem;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 4rem;
+  margin-bottom: 1px;
+}
+
+.calendar .days li .event.span-2 {
+  width: 200%;
+}
+
+.calendar .days li .event.begin {
+  border-radius: 1rem 0 0 1rem;
+}
+
+.calendar .days li .event.end {
+  border-radius: 0 1rem 1rem 0;
+}
+
+.calendar .days li .event.clear {
+  background: none;
+}
+
+.calendar .days li:nth-child(n + 29) {
+  border-bottom: none;
+}
+
+.calendar .days li.outside .date {
+  color: rgb(0, 0, 0);
+}
+
+.outside {
+  background-color: #f8f8f8;
+}
+
+.bg-primary {
+  
+}
+
+.event {
+  color: black;
+}
+/*
+*
+* ==========================================
+* FOR DEMO PURPOSES
+* ==========================================
+*
+*/
+body {
+  min-height: 100vh;
+  background-color: #ffffff;
+  background-image: linear-gradient(147deg, #ffffff 0%, #ffffff 100%);
+}
+</style>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
+<body>
+  <div class="container py-5">
+    <!-- For Demo Purpose -->
+    <header class="text-center text-white mb-5">
+      <h1 class="display-4">Event Calendar</h1>
+      <p class="font-italic mb-0">
+        User the calendar to see all your events, and plan appointments.
+      </p>
+    </header>
+
+    <!-- Calendar -->
+    <div class="calendar shadow bg-white p-5">
+      <div class="d-flex align-items-center">
+        <i class="fa fa-calendar fa-3x mr-3"></i>
+        <h2 class="month font-weight-bold mb-0 text-uppercase">
+          April 2021
+        </h2>
+      </div>
+      <p class="font-italic text-muted mb-5"><a href="/agenda">Click here for more granular view by week.</a> </p>
+      <ol class="day-names list-unstyled">
+        <li class="font-weight-bold text-uppercase">Sun</li>
+        <li class="font-weight-bold text-uppercase">Mon</li>
+        <li class="font-weight-bold text-uppercase">Tue</li>
+        <li class="font-weight-bold text-uppercase">Wed</li>
+        <li class="font-weight-bold text-uppercase">Thu</li>
+        <li class="font-weight-bold text-uppercase">Fri</li>
+        <li class="font-weight-bold text-uppercase">Sat</li>
+      </ol>
+
+      <ol class="days list-unstyled" id="calendar-list">
+        <!-- <li class="outside">
+          <div class="date">28</div>
+        </li>
+        <li>
+          <div class="date">1</div>
+        </li>
+        <li>
+          <div class="date">2</div>
+        </li>
+        <li>
+          <div class="date">3</div>
+        </li>
+        <li>
+          <div class="date">4</div>
+        </li>
+        <li>
+          <div class="date">5</div>
+        </li>
+        <li>
+          <div class="date">6</div>
+        </li>
+        <li>
+          <div class="date">7</div>
+        </li>
+        <li>
+          <div class="date">8</div>
+        </li>
+        <li>
+          <div class="date">9</div>
+        </li>
+        <li>
+          <div class="date">10</div>
+        </li>
+        <li>
+          <div class="date">11</div>
+        </li>
+        <li>
+          <div class="date">12</div>
+        </li>
+        <li>
+          <div class="date">13</div>
+        </li>
+        <li>
+          <div class="date">14</div>
+        </li>
+        <li>
+          <div class="date">15</div>
+        </li>
+        <li>
+          <div class="date">16</div>
+        </li>
+        <li>
+          <div class="date">17</div>
+        </li>
+        <li>
+          <div class="date">18</div>
+        </li>
+        <li>
+          <div class="date">19</div>
+        </li>
+        <li>
+          <div class="date">20</div>
+         
+        </li>
+        <li>
+          <div class="date">21</div>
+        </li>
+        <li>
+          <div class="date">22</div>
+        </li>
+        <li>
+          <div class="date">23</div>
+        </li>
+        <li>
+          <div class="date">24</div>
+        </li>
+        <li>
+          <div class="date">25</div>
+        </li>
+        <li>
+          <div class="date">26</div>
+        </li>
+        <li>
+          <div class="date">27</div>
+        </li>
+        <li>
+          <div class="date">28</div>
+        </li>
+        <li>
+          <div class="date">29</div>
+        </li>
+        <li>
+          <div class="date">30</div>
+        </li>
+        <li>
+          <div class="date">31</div>
+        </li>
+        <li class="outside">
+          <div class="date">1</div>
+        </li>
+        <li class="outside">
+          <div class="date">2</div>
+        </li>
+        <li class="outside">
+          <div class="date">3</div>
+        </li> -->
+      </ol>
+      <script>
+        const acalendar = document.getElementById("calendar-list");
+        const today = new Date();
+        const ad = new Date(today.getFullYear(), today.getMonth());
+        const atemp = new Date(ad);
+        atemp.setDate(ad.getDate() - ad.getDay())
+        for (let i = 0; i < ad.getDay(); i++) {
+        //   <li class="outside">
+        //   <div class="date">28</div>
+        // </li>
+          const e = document.createElement("li");
+          e.classList.add("outside");
+          const div = document.createElement("div");
+          div.classList.add("date");
+          div.innerText = atemp.getDate();
+          e.appendChild(div);
+          acalendar.appendChild(e);
+          atemp.setDate(atemp.getDate() + 1);
+        }
+        while (ad.getMonth() === today.getMonth()) {
+          // <li>
+          //   <div class="date">1</div>
+          // </li>
+          const e = document.createElement("li");
+          const div = document.createElement("div");
+          div.classList.add("date");
+          div.innerText = ad.getDate();
+          e.appendChild(div);
+          acalendar.appendChild(e);
+          ad.setDate(ad.getDate() + 1);
+        }
+        while (ad.getDay() != 0) {
+          const e = document.createElement("li");
+          e.classList.add("outside");
+          const div = document.createElement("div");
+          div.classList.add("date");
+          div.innerText = ad.getDate();
+          e.appendChild(div);
+          acalendar.appendChild(e);
+          ad.setDate(ad.getDate() + 1);
+        }
+      </script>
+    </div>
+    <button id="newEvent" type="button" class="btn btn-primary" data-toggle='modal' data-target="#addModal">
+      Schedule Appoinment
+    </button>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create Appointment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+            <div class="modal-body">
+              <div class="dropdown">
+                
+
+                <form
+                  id="event-form"
+                  action="/api/events"
+                  method="POST"
+                  role="form"
+                >
+                  <label for="cal">Select a date:</label>
+                  <input
+                    class="flatpickr"
+                    name="datetime"
+                    type="text"
+                    placeholder="Select Date.."
+                    data-id="altinput"
+                  />
+                  <br />
+                  <label for="duration">Duration (minutes): </label>
+                  <input
+                    type="number"
+                    id="duration"
+                    name="duration"
+                    value="30"
+                    min="30"
+                    max="90"
+                    step="30"
+                  />
+                  <br />
+                  Event Name:<input type="text" name="name" id="name" />
+                  Description:<input
+                    type="text"
+                    name="description"
+                    id="description"
+                  />
+                  <button id="newEventButton" type="" class="btn btn-primary">
+                    Confirm New Event
+                  </button>
+                </form>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="rescheduleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Reschedule Appointment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+            <div class="modal-body">
+              <div class="dropdown">
+                
+
+                <form
+                  id="event-form"
+                  class="rescheduleForm"
+                  action="/api/events"
+                  method="PUT"
+                  role="form"
+                >
+                  <label for="cal">Select a date:</label>
+                  <input
+                    class="flatpickrResched"
+                    name="datetime"
+                    type="text"
+                    placeholder="Select Date.."
+                    data-id="altinput"
+                  />
+                  <br />
+                  Event Name:<input type="text" name="name" id="nameResched" />
+                  Description:<input
+                    type="text"
+                    name="description"
+                    id="descriptionResched"
+                  />
+                  <button id="newEventButton" type="" class="btn btn-primary">
+                    Confirm Reschedule
+                  </button>
+                </form>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" id='modalBodyElement'>
+        <h5 class="modal-title" id="modalTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span id='closeEvent' aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id='modalBodyContent'>
+        <div id='eventIdElement' hidden='true'></div>
+        <div id='calendarEventIdentifier' hidden='true'></div>
+        <div>Name: <span id="event-name"></span></div>
+        <div>Description: <span id="event-description"></span></div>
+        <div>Date: <span id="event-date"></span></div>
+        <div>Time: <span id="event-time"></span></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" id="reschedbtn">Reschedule</button>
+        <button id='modalDelete' type="button" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+<script>
+  document.getElementById("reschedbtn").addEventListener("click", function() {
+    $("#exampleModal").modal("toggle");
+    $("#rescheduleModal").modal();
+    // document.getElementById("nameResched").value = 
+  })
+  var currentMonth = 04; //hardcoded now but will change later
+  var events;
+  
+  $.ajax({ url: "/api/events", method: "get" }).done((data) => {
+    // var appointments_list;
+    // $.ajax({url: "/api/events/appointments", method: 'get'}).done((appointments) => {
+    //   appointments_list = appointments;
+    // });
+    // console.log('appointments ' + appointments_list);
+    var sortedActivities = data.sort(
+        (a, b) => new Date(b.datetime) - new Date(a.datetime)
+      );
+      
+    var reversedCopy = sortedActivities.reverse();
+     
+    events = reversedCopy;
+  
+
+       //code that populates calendar with events
+    // var dates = document.getElementsByClassName('date');
+    // for (var i = 0; i < dates.length; i++) {
+    
+    // events.forEach((event) => {
+    //   temp_date = moment(event.datetime).format('llll').slice(0, 18);
+    //   calendar_date = new Date(`2021-${currentMonth}-${dates[i].innerHTML}`);
+    //   calendar_date = moment(calendar_date).format('llll').slice(0, 18);
+    //       //there is a user event that coincides with a day displayed on the calendar if true
+    //       if (event.name == 'Appointment') {
+    //         temp_date = temp_date.slice(0, temp_date.length -1);
+    //         calendar_date = calendar_date.slice(0, calendar_date.length-1);
+    //       }
+    //       if (temp_date == calendar_date) {
+    //         var div = document.createElement('div');
+    //         div.classList.add('event');
+    //         div.classList.add('bg-primary');
+    //         if (event.name == 'Appointment') {
+    //           div.classList.add('btn-success');
+    //         }
+    //         div.id = event.name + event.datetime;
+    //         // document.getElementById(div.id).addEventListener('click', eventSelect(div.id));
+    //         div.innerHTML = event.name + " " + moment(event.datetime).format('llll').slice(18, );
+    //         dates[i].parentNode.appendChild(div);
+            
+    //       }
+    // });
+    // }
+    events.filter(event => new Date(event.datetime).getMonth() == today.getMonth()).forEach((event) => {
+      const dateElement = $(`.date`).filter(function () {
+        return $(this).text() == new Date(event.datetime).getDate();
+      });
+      var div = document.createElement("div");
+      div.classList.add("event");
+      div.classList.add("bg-primary");
+      if (event.name == 'Appointment') {
+        div.classList.add('btn-success');
+      }
+
+      // data-toggle="modal" data-target="#exampleModal"
+      div.setAttribute('data-toggle', 'modal');
+      temp = '#exampleModal';
+      div.setAttribute('data-target', temp);
+      div.id = event.name + event.datetime;
+      div.addEventListener('click', function() {
+        displayEventInfo.bind(this)(event);
+      });
+      
+      // document.getElementById(div.id).addEventListener('click', redirectToAgenda(div.id));
+      div.innerHTML = event.name + " " + moment(event.datetime).format("llll").slice(18);
+      // dateElement.parentNode.appendChild(div);
+      dateElement.parent().append(div);
+     
+    });
+  });
+
+  function displayEventInfo(event) {
+    console.log(this);
+    
+    const startOfMonth = moment().clone().startOf('month').format('YYYY-MM-DD hh:mm');
+    const endOfMonth   = moment().clone().endOf('month').format('YYYY-MM-DD hh:mm');
+    
+
+    if (moment(event.date).format('YYYY-MM-DD hh:mm') >= startOfMonth && moment(event.date).format('YYYY-MM-DD hh:mm') <= endOfMonth) {
+    modal_title = document.getElementById('modalTitle');
+    
+    modal_title.innerHTML = event.name;
+
+    modal_body = document.getElementById('modalBodyContent');
+    // modal_body.innerText = ""
+
+    // e_name = document.createElement('div');
+    // e_name.innerHTML = `Name: ${event.name}`;
+    // modal_body.appendChild(e_name);
+
+    // e_description = document.createElement('div');
+    // e_description.innerHTML = `Description: ${event.description}`;
+    // modal_body.appendChild(e_description);
+
+    // e_date = document.createElement('div');
+    // e_date.innerHTML = `Date: ${moment(event.datetime).format("llll").slice(0,18)}`;
+    // modal_body.appendChild(e_date);
+
+    // e_time = document.createElement('div');
+    // e_time.innerHTML = `Time: ${moment(event.datetime).format("llll").slice(18)}`;
+    // modal_body.appendChild(e_time);
+
+    document.getElementById("event-name").innerText = event.name;
+    document.getElementById("event-description").innerText = event.description;
+    document.getElementById("event-date").innerText = moment(event.datetime).format("llll").slice(0,18)
+    document.getElementById("event-time").innerText = moment(event.datetime).format("llll").slice(18)
+
+    document.getElementById("event-name").innerText = event.name;
+    document.getElementById("nameResched").value = event.name;
+    document.getElementById("descriptionResched").value = event.description;
+    document.getElementsByClassName("rescheduleForm")[0].setAttribute("action", `/api/events/${event.event_id}`)
+    reschedFP.setDate(event.datetime);
+    
+
+    // this is so it's easy to delete or update event if those buttons are clicked
+    e_id = document.getElementById('eventIdElement');
+    e_id.innerHTML = event.event_id;
+
+    e_identifier = document.getElementById('calendarEventIdentifier');
+    e_identifier.innerHTML = event.name + event.datetime;
+    
+    
+    }
+
+    // //top layer of modal
+    // div1 = document.createElement('div');
+    // div1.classList.add('modal');
+    // div1.classList.add('fade');
+    // div1.setAttribute('tabindex', '-1');
+    // div1.setAttribute('role', 'dialog');
+    // div1.id = 'modal';
+    // //second layer
+    // div2 = document.createElement('div');
+    // div2.classList.add('modal-dailog');
+    // div2.setAttribute('role', 'document');
+    // //third layer
+    // div3 = document.createElement('div');
+    // div3.classList.add('modal-content');
+    // //fourth layer
+    // div4 = document.createElement('div');
+    // div4.classList.add('modal-header');
+    // h5 = document.createElement('h5');
+    // h5.classList.add('modal-title');
+    // h5.innerHTML = event.name + " " + moment(event.datetime).format("llll").slice(18);
+    // button = document.createElement('button');
+    // button.classList.add('close');
+    // button.setAttribute('data-dismiss', 'modal');
+    // button.setAttribute('aria-label', 'Close');
+    
+    // div4.appendChild(h5);
+    // div4.appendChild(button);
+
+    // div3.appendChild(div4);
+
+    // div2.appendChild(div3);
+
+    // div1.appendChild(div2);
+
+    // this.append(div1);
+   
+  }
+
+  document.getElementById('modalDelete').addEventListener('click', function() {
+    event_id = document.getElementById('eventIdElement').innerHTML;
+    console.log(event_id);
+    $.ajax({
+        url: `/api/events/${event_id}`,
+        method: "DELETE",
+      })
+        .done((data) => {
+          console.log(data);
+        })
+        .fail(({ responseJSON: { errors } }) => {
+          errors.forEach(console.log);
+        });
+      
+        //remove event from the calendar
+      document.getElementById(document.getElementById('calendarEventIdentifier').innerHTML).remove();
+      //hide modal
+      document.getElementById('closeEvent').click();
+      // document.getElementById("delete_form").submit()
+    
+  });
+  
+  function redirectToAgenda(divId) {
+    // 
+  }
+
+  function getDayInfo(datetime){
+    event_list = {};
+    events.forEach((event) => {
+      // if event is on same day
+      month = moment(datetime).format("llll").slice(5, 8);
+      day = moment(datetime).format("llll").slice(9, 11);
+      // console.log(month , day);
+      
+      month2 = moment(event.datetime).format("llll").slice(5, 8);
+      day2 = moment(event.datetime).format("llll").slice(9, 11);
+      if (month + day in event_list && month + day == month2 + day2) {
+        event_list[month + day].push(event.name);
+      }
+      // console.log(month2, day2);
+      else if (month2 + day2 == month + day) {
+        event_list[month + day] = []
+        event_list[month + day].push(event.name);
+      }
+    });
+    console.log(event_list);
+
+    // <div id="my-tip" class="tip-content hidden">
+    // <h2>Tip title</h2>
+    // <p>This is my tip content</p>
+    // </div>
+
+    div = document.createElement('div');
+    content = document.createElement('p');
+    content.innerHTML = 'This is a test';
+    div.appendChild(content);
+
+    return div.innerHTML;
+  }
+
+  function eventSelect(element) {
+    alert(element + " clicked");
+  }
+
+  $("form").submit(function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: $(this).attr("action"),
+        method: $(this).attr("method"),
+        data: $(e.target).serializeArray(),
+      })
+        .done(() => {
+          location.reload();
+          return false;
+        })
+        .fail(console.error);
+    });
+ 
+
+    const fp = flatpickr(".flatpickr", {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i",
+      altInput: true,
+      altFormat: "m/d/Y h:i K",
+
+      minDate: "today",
+      minTime: "09:00",
+      maxTime: "16:30",
+
+      disable: [
+        // function (date) {
+        //   return date.getDay() === 0 || date.getDay() === 6;
+        // },
+        (date) => date.getDay() === 0 || date.getDay() === 6,
+      ],
+    });
+    const reschedFP = flatpickr(".flatpickrResched", {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i",
+      altInput: true,
+      altFormat: "m/d/Y h:i K",
+
+      minDate: "today",
+      minTime: "09:00",
+      maxTime: "16:30",
+
+      disable: [
+        // function (date) {
+        //   return date.getDay() === 0 || date.getDay() === 6;
+        // },
+        (date) => date.getDay() === 0 || date.getDay() === 6,
+      ],
+    });
+</script>
+<%- include('partials/footer.ejs') %>

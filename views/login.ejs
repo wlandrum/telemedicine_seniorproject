@@ -1,0 +1,302 @@
+<%- include('partials/header.ejs', {title: typeof selected === "undefined" ||
+selected === "login" ? "Login" : "Register", styles: ["login"], active:
+"login"}) %>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-login">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-xs-6">
+                <a
+                  href="#"
+                  class="<%= typeof selected === 'undefined' || selected === 'login' ? 'active' : '' %>"
+                  id="login-form-link"
+                  >Login</a
+                >
+              </div>
+              <div class="col-xs-6">
+                <a
+                  href="#"
+                  class="<%= typeof selected !== 'undefined' && selected === 'register' ? 'active' : '' %>"
+                  id="register-form-link"
+                  >Register</a
+                >
+              </div>
+            </div>
+            <hr />
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <form
+                  id="login-form"
+                  action="/api/auth"
+                  method="post"
+                  role="form"
+                  style="display: <%= typeof selected === 'undefined' || selected === 'login' ? 'block' : 'none' %>"
+                >
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      name="email"
+                      id="email"
+                      autocomplete="email"
+                      tabindex="1"
+                      class="form-control"
+                      placeholder="Email"
+                      value=""
+                    />
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      autocomplete="current-password"
+                      tabindex="2"
+                      class="form-control"
+                      placeholder="Password"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-sm-6 col-sm-offset-3">
+                        <input
+                          type="submit"
+                          name="login-submit"
+                          id="login-submit"
+                          tabindex="4"
+                          class="form-control btn btn-login"
+                          value="Log In"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="text-center">
+                          <a
+                            href="https://phpoll.com/recover"
+                            tabindex="5"
+                            class="forgot-password"
+                            >Forgot Password?</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <form
+                  id="register-form"
+                  action="/api/users"
+                  method="post"
+                  role="form"
+                  style="display: <%= typeof selected !== 'undefined' && selected === 'register' ? 'block' : 'none' %>"
+                >
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      name="first_name"
+                      id="first_name"
+                      tabindex="1"
+                      class="form-control"
+                      placeholder="First Name"
+                      value=""
+                    />
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      name="last_name"
+                      id="last_name"
+                      tabindex="1"
+                      class="form-control"
+                      placeholder="Last Name"
+                      value=""
+                    />
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="email"
+                      name="email"
+                      id="email-register"
+                      autocomplete="email"
+                      tabindex="1"
+                      class="form-control"
+                      placeholder="Email Address"
+                      value=""
+                    />
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="password"
+                      name="password"
+                      id="password-register"
+                      autocomplete="new-password"
+                      tabindex="2"
+                      class="form-control"
+                      placeholder="Password"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="password"
+                      name="confirm_password"
+                      id="confirm_password"
+                      autocomplete="new-password"
+                      tabindex="2"
+                      class="form-control"
+                      placeholder="Confirm Password"
+                    />
+                  </div>
+                  <!-- <input
+                    type="checkbox"
+                    name="doctor"
+                    class="user-type"
+                    id="doctor-check"
+                  />
+                  <label for="'user-type">Doctor</label> -->
+                  <input
+                    type="checkbox"
+                    name="patient"
+                    class="user-type"
+                    id="patient-check"
+                    checked
+                  />
+                  <label for="'user-type">Patient</label>
+                  <!-- will need something here to prevent user from selecting both doctor and patient -->
+
+                  <div class="patient-input inputs">
+                    <div class="form-group">
+                      <input
+                        type="number"
+                        name="age"
+                        id="age"
+                        tabindex="3"
+                        class="form-control"
+                        placeholder="Age"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        name="insurance"
+                        id="insurance"
+                        tabindex="3"
+                        class="form-control"
+                        placeholder="Insurance"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="form-group doctor-input inputs"
+                    style="display: none"
+                  >
+                    <input
+                      type="text"
+                      name="dept"
+                      id="dept"
+                      tabindex="3"
+                      class="form-control"
+                      placeholder="Department"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-sm-6 col-sm-offset-3">
+                        <input
+                          type="submit"
+                          name="register-submit"
+                          id="register-submit"
+                          tabindex="4"
+                          class="form-control btn btn-register"
+                          value="Register Now"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(function () {
+      history.replaceState(
+        {
+          this:
+            "<%= typeof selected === 'undefined' || selected === 'login' ? 'login' : 'register' %>",
+        },
+        ""
+      );
+      ["login", "register"].forEach((i) => {
+        const other = ["login", "register"].find((e) => e !== i);
+        $(`#${i}-form-link`).click(function (e) {
+          $(`#${i}-form`).delay(100).fadeIn(100);
+          $(`#${other}-form`).fadeOut(100);
+          $(`#${other}-form-link`).removeClass("active");
+          $(`#${i}-form-link`).addClass("active");
+          history.pushState({ this: `${i}` }, ``, `/${i}`);
+          e.preventDefault();
+        });
+      });
+      $("form").submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+          url: $(this).attr("action"),
+          method: "post",
+          data: $(e.target).serializeArray(),
+        })
+          .done(() => {
+            showEvent();
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+          })
+          .fail(({ responseJSON: { errors } }) => {
+            errors.forEach(showError);
+          });
+      });
+
+      $(".user-type").click(function (e) {
+        $(".user-type").prop("checked", false);
+        $(this).prop("checked", true);
+        if ($(`.${$(this).attr("name")}-input`).is(":hidden")) {
+          $(".inputs").fadeOut(250);
+          $(`.${$(this).attr("name")}-input`).fadeIn(250);
+        }
+      });
+
+      $(document).on("input", ".has-error input", function () {
+        $(this).parent().removeClass("has-error");
+        $(this).next().fadeOut();
+      });
+      $(document).on("click", ".close", function () {
+        if ($(this).parent().parent().hasClass("has-error")) {
+          $(this).parent().parent().removeClass("has-error");
+          $(this).parent().fadeOut();
+        }
+      });
+      window.onpopstate = function (e) {
+        if (e.state) {
+          const other = ["login", "register"].find((i) => e.state.this !== i);
+          document.title =
+            e.state.this[0].toUpperCase() + e.state.this.slice(1);
+          $(`#${e.state.this}-form`).delay(100).fadeIn(100);
+          $(`#${other}-form`).fadeOut(100);
+          $(`#${other}-form-link`).removeClass("active");
+          $(`#${e.state.this}-form-link`).addClass("active");
+        }
+      };
+    });
+  </script>
+  <%- include('partials/footer.ejs') %>
+</body>

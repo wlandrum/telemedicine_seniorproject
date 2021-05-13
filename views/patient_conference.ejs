@@ -1,0 +1,48 @@
+<head>
+    <title>Telemedicine Web Conference</title>
+  </head>
+  <body>
+    <h1>Welcome to Telemedicine Waiting Room</h1>
+  </body>
+  <button id="join-button" disabled>Join Room</button>
+  <button id="leave-button" class="hidden">Leave Room</button>
+  <div id="waiting-room" class="hidden">
+    <p>Thanks! Your provider will be with you shortly.</p>
+  </div>
+  <div id="local-media-container"></div>
+  <script src="./index.js"></script>
+  <script src="//media.twiliocdn.com/sdk/js/video/releases/2.3.0/twilio-video.min.js"></script>
+  <script>
+    $.ajax({ url: "/api/events", method: "get" }).done((data) => 
+    {
+      var testdata = data;
+
+      var sortedActivities = data.sort(
+        (a, b) => new Date(b.datetime) - new Date(a.datetime)
+      );
+
+      var today = new Date();
+      var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+      for(i = 0; i < sortedActivities.length; i++)
+      {
+        var appointmentDateObj = new Date(sortedActivities[parseInt(i)].datetime.substring(0,10) + " " + sortedActivities[parseInt(i)].datetime.substring(11,19));
+        var plus15 = new Date(appointmentDateObj);
+        plus15.setMinutes(plus15.getMinutes() + 15);
+
+        if(today >= appointmentDateObj && today <= plus15)
+        {
+          document.getElementById("join-button").disabled = false;
+        };
+
+      }
+    });
+
+    const joinButton = document.getElementById("join-button");
+    joinButton.addEventListener("click", async (event) => {
+      await joinRoom(event, "patient");
+    });
+
+    const leaveButton = document.getElementById("leave-button");
+    leaveButton.addEventListener("click", onLeaveButtonClick);
+  </script>

@@ -1,0 +1,31 @@
+{
+  "name": "telemedicine-portal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "server": "nodemon index",
+    "dev": "concurrently \"npm:server\" \"npm:db\"",
+    "db": "cd C:/xampp && mysql_start.bat",
+    "stop": "cd C:/xampp && mysql_stop.bat"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "config": "^3.3.3",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-mysql-session": "^2.1.5",
+    "express-session": "^1.17.1",
+    "express-validator": "^6.9.2",
+    "moment": "^2.29.1",
+    "mysql": "^2.18.1",
+    "twilio": "^3.59.0",
+    "twilio-video": "^2.13.1"
+  }
+}

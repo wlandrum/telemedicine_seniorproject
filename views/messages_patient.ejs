@@ -1,0 +1,255 @@
+<style>
+  body {
+    margin-top: 20px;
+  }
+
+  /* this will allow users to scroll through messages if they overflow to make the element larger than 700px */
+  .comment-wrapper .panel-body {
+    max-height: 700px;
+    overflow: auto;
+  }
+
+  .comment-wrapper .media-list .media {
+    border-bottom: 1px dashed #a19595;
+    margin-bottom: 30px;
+  }
+
+  small {
+    display: block;
+  }
+
+  .center {
+    margin: auto;
+    width: 100%;
+
+    padding: 10px;
+  }
+
+  #subContainer {
+    display: block;
+  }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
+<body>
+  <div class="jumbotron" align="center">
+    <h1 class="display-4">Messages</h1>
+    <p class="lead">Chat with your physician.</p>
+    <!-- <form action="/api/messages" method="POST">
+
+      <input type="text" name="content" id="content" />
+  
+      <button type="submit">Submit</button>
+  
+    </form> -->
+  </div>
+
+  <div class="container">
+    <div class="row bootstrap snippets bootdeys center">
+      <div id="subContainer" class="">
+        <div class="comment-wrapper">
+          <div class="panel panel-info">
+            <div class="panel-heading">Message Panel</div>
+            <div class="panel-body">
+              <!-- <form action="/api/messages" method="POST">
+                <textarea
+                  name="content"
+                  class="form-control"
+                  placeholder="write a comment..."
+                  rows="3"
+                ></textarea>
+                <br />
+                <button type="submit" class="btn btn-info pull-right">
+                  Send
+                </button>
+              </form> -->
+
+              <div class="clearfix"></div>
+              <hr />
+              <ul class="media-list" id="message_list">
+                <!-- <li class="media">
+                               
+                                <div class="media-body">
+                                    <span class="text-muted pull-right">
+                                        <small class="text-muted">Datetime</small>
+                                    </span>
+                                    <strong class="text-success">MartinoMont</strong>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                        Lorem ipsum dolor sit amet.
+                                    </p>
+                                </div>
+                            </li> -->
+                <% //populateList() %>
+              </ul>
+              <form action="" method="">
+                <textarea
+                  id="newMessageContent"
+                  name="content"
+                  class="form-control"
+                  placeholder="write a comment..."
+                  rows="3"
+                ></textarea>
+                <br />
+                <button id="newMessage" class="btn btn-info pull-right">
+                  Send
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document
+      .getElementById("newMessage")
+      .addEventListener("click", function () {
+        content = document.getElementById("newMessageContent").value;
+
+        $.post(`/api/messages/`, { content });
+      });
+
+    $.ajax({ url: "/api/messages/html", method: "get" }).done((data) => {
+      $.ajax({ url: "/api/messages/read", method: "put" }).done(() => {
+        loadUnreadBadge();
+      });
+      document.getElementById("message_list").innerHTML = data;
+    });
+    // $.ajax({ url: "/api/messages", method: "get" }).done((data) => {
+    //   $.ajax({ url: "/api/messages/read", method: "put" }).done(() => {
+    //     // document.getElementById("unread").innerText = 0;
+    //     loadUnreadBadge();
+    //   });
+    //   console.log(data);
+    //   var message_list = document.getElementById("message_list");
+    //   data.forEach((element) => {
+    //     // create the li element with DB data
+    //     // append to message_list
+    //     var li = document.createElement("li");
+    //     li.classList.add("media");
+
+    //     var div = document.createElement("div");
+    //     div.classList.add("media-body");
+
+    //     var span = document.createElement("span");
+    //     span.classList.add("text-muted");
+    //     span.classList.add("pull-right");
+
+    //     var div2 = document.createElement("div");
+    //     div2.setAttribute("align", "right");
+
+    //     var small = document.createElement("small");
+    //     small.classList.add("text-muted");
+    //     small.classList.add("float-right");
+    //     small.classList.add("form-text");
+    //     small.setAttribute("align", "right");
+    //     date = moment(element.date_created);
+    //     small.innerHTML = date.format("llll");
+
+    //     var strong = document.createElement("strong");
+    //     strong.classList.add("text-success");
+    //     strong.innerHTML =
+    //       element.sender_id == "<%= user.id %>"
+    //         ? "Me"
+    //         : `${element.sender_first_name} ${element.sender_last_name}`; //user.first_name[0].toUpperCase() + user.first_name.slice(1).toLowerCase();
+
+    //     var p = document.createElement("p");
+    //     p.innerHTML = element.mes_content;
+
+    //     div.appendChild(span);
+    //     div.appendChild(strong);
+    //     div.append(small);
+
+    //     div.appendChild(p);
+
+    //     li.appendChild(div);
+
+    //     message_list.appendChild(li);
+
+    //     // <li class="media">
+
+    //     //                          <div class="media-body">
+    //     //                              <span class="text-muted pull-right">
+    //     //                                  <small class="text-muted">Datetime</small>
+    //     //                              </span>
+    //     //                              <strong class="text-success">MartinoMont</strong>
+    //     //                              <p>
+    //     //                                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    //     //                                  Lorem ipsum dolor sit amet.
+    //     //                              </p>
+    //     //                          </div>
+    //     //                      </li>
+    //   });
+    // });
+
+    //
+
+    function populateList() {
+      var comments_list = document.getElementsByClassName("media-list");
+      var name = "Test Name";
+      var message =
+        "Test message. I am inevitable. I am Iron Man. Cheesy Bean Burritos are not good for heart health.";
+      var datetime = "August 1 2077";
+      var element = `<li class="media"> <div class="media-body"> <span class="text-muted pull-right"> <small class="text-muted">${datetime}</small> </span> <strong class="text-success">${name}</strong> <p>${message}</p> </div> </li>`;
+
+      for (let x = 0; x < 5; x++) {
+        $(comments_list.append(element));
+      }
+    }
+  </script>
+
+  <!-- <div class="jumbotron" align='center'>
+    <h1 class="display-4">History</h1>
+    <p class="lead">See past chats.</p>
+    <label for="start">Date:</label>
+
+<input type="date" id="start" name="trip-start"
+       value="2021-01-22"
+       min="2021-01-01" max="2022-12-31">
+     <div class="form-group">
+   <br>
+      <table class='table table-bordered'>
+        <tbody>
+          <thead>
+            <th>Time</th>
+            <th>Received</th>
+            <th>Sent</th>
+          </thead>
+          <tr>
+            <th scope="row">Time1</th>
+            <td> </td>
+            <td>Message 1</td>
+          </tr>
+          <tr>
+            <th scope="row">Time2</th>
+            <td>Message 2 - reallly loooooooooooooooooooooongs message</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">Time 3</th>
+            <td>Message 3</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <p class="lead">
+      <a id='sendMessage' class="btn btn-danger btn-lg" href="#" role="button">Delete Conversation</a>
+    </p>
+  </div>
+
+
+   <script>
+    //  // message feature can either be limited to last 24 hours or user can select date to go back and see messages from that date
+    //  document.getElementById("exampleFormControlTextarea1").addEventListener("click", function (event) {
+    //     //for each message associated with user create html element with date/time/etc
+    //  });
+     
+    //  document.getElementById('sendMessage').addEventListener('click', function (event) {
+    //    document.getElementById
+    //  });
+     
+   </script> -->
+</body>

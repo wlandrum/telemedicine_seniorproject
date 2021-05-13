@@ -1,0 +1,10 @@
+<div class="chat_list" id="<%= convo.first_name + convo.last_name %>" onclick="click_convo('<%= convo.id %>')">
+    <div class="chat_summary_container">
+        <div class="chat_summary">
+            <h5><%= `${convo.first_name} ${convo.last_name}` %>
+                <div class="unread badge badge-success" id="unread-<%= convo.id %>"></div>
+                <span class="chat_date"><%= moment(convo.date).format("l") %></span>
+            </h5>
+        </div>
+    </div>
+</div>

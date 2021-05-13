@@ -1,0 +1,284 @@
+<%- include('partials/header.ejs', {title: "Account Info", styles: ["home"],
+active: "home"}) %>
+
+
+<style>
+    .list_of_settings {
+        margin-top: 10%;
+    }
+
+    form {
+        margin-top: 5%;
+    }
+
+    #update_btn {
+        float: right;
+        margin-right: 15px;
+    }
+
+    #prof_pic {
+        margin-left: 50px;
+    }
+
+    button {
+        float: right;
+        margin-right: 15px;
+    }
+</style>
+
+
+
+<div class="container">
+    <div class="list_of_settings">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-4 pb-5">
+                    <!-- Account Sidebar-->
+                    <div id="prof_pic" class="author-card pb-3">
+                        <div class="author-card-profile">
+                            <div class="author-card-avatar">
+                                <img src="https://img.icons8.com/pastel-glyph/2x/person-male.png" alt="profile_pic">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wizard">
+                        <nav class="list-group list-group-flush">
+                            <a class="list-group-item text-muted" href="/account">
+                                General
+                            </a>
+                            <a class="list-group-item" href="#" onclick="password_form()">
+                                Password
+                            </a>
+                            <a class="list-group-item" href="#" onclick="address_form()">
+                                Address
+                            </a>
+                            <a class="list-group-item" href="#" onclick="emergency_contact_form()">
+                                Emergency Contact
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Profile Settings-->
+                <div class="col-lg-8 pb-5">
+                    <form id="general_form_field" class="row" action="/api/profile" method="PUT" role="form">
+                        <div class="col-md-6">   
+                            <div class="form-group">
+                                <label for="account-fn">First Name</label>
+                                <input class="form-control" type="text" id="account-fn"
+                                    value="<%= user.first_name[0].toUpperCase() + user.first_name.slice(1).toLowerCase() %>"
+                                    name="first_name">
+                            </div>
+                        </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="account-ln">Last Name</label>
+                                    <input class="form-control" type="text" id="account-ln"
+                                        value="<%= user.last_name[0].toUpperCase() + user.last_name.slice(1).toLowerCase() %>"
+                                        name="last_name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="account-email">E-mail Address</label>
+                                    <input class="form-control" type="email" id="account-email"
+                                        value="<%=user.email %>"
+                                        name="email">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="account-phone">Phone Number</label>
+                                    <input class="form-control" type="text" id="account-phone"
+                                        value="<%=user.phone %>"
+                                        name="phone">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="account-ht">Height</label>
+                                    <input class="form-control" type="text" id="account-ht" name="height" value="<%=user.height %>">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="account-wt">Weight</label>
+                                    <input class="form-control" type="text" id="account-wt" name="weight" value="<%=user.weight %>">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="account-ssn">SSN</label>
+                                    <input class="form-control" type="password" id="account-ssn" placeholder="SSN" name="ssn" value="<%=user.ssn %>">
+                                </div>
+                            </div class="col-md-6">
+                            <div class="col-12">
+                                <hr class="mt-2 mb-3">
+                                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                    <button class="btn btn-style-1 btn-primary" id="general_update_btn"
+                                        type="submit" data-toast="" data-toast-position="topRight"
+                                        data-toast-type="success" data-toast-icon="fe-icon-check-circle"
+                                        data-toast-title="Success!"
+                                        data-toast-message="Your profile updated successfuly.">Update
+                                        Profile</button>
+                                </div>
+                            </div>
+                    </form>
+
+                    <!-- Password form -->
+                    <form id="password_form_field" class="row" hidden="true" action="/api/profile/password" method="PUT" role="form">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="account-pass">New Password</label>
+                                <input class="form-control" type="password" id="account-pass"
+                                    placeholder="Password"
+                                    >
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="account-confirm-pass">Confirm Password</label>
+                                <input class="form-control" type="password" id="account-confirm-pass"
+                                    placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <hr class="mt-2 mb-3">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                <button class="btn btn-style-1 btn-primary" id="password_update_btn" type="submit"
+                                    data-toast="" data-toast-position="topRight" data-toast-type="success"
+                                    data-toast-icon="fe-icon-check-circle" data-toast-title="Success!"
+                                    data-toast-message="Your profile updated successfuly.">Update Profile</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Address form -->
+                    <form id="address_form_field" class="row" hidden="true" action="/api/profile/address" method="PUT" role="form">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="street">Street</label>
+                                <input class="form-control" type="text" id="street" placeholder="Steet Apt#" name="street">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input class="form-control" type="text" id="city" placeholder="City" name="city">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <input class="form-control" type="text" id="state" placeholder="State" name="state">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="zip">zip</label>
+                                <input class="form-control" type="text" id="zip" placeholder="Zip" name="zip">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <hr class="mt-2 mb-3">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                <button class="btn btn-style-1 btn-primary" id="address_update_btn" type="submit"
+                                    data-toast="" data-toast-position="topRight" data-toast-type="success"
+                                    data-toast-icon="fe-icon-check-circle" data-toast-title="Success!"
+                                    data-toast-message="Your profile updated successfuly.">Update Profile</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Emergency Contact form -->
+                    <form id="emergency_contact_field" class="row" hidden="true" action="">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="emergency_account-fn">Emergency Contact First Name</label>
+                                <input class="form-control" type="text" id="emergency_account-fn"
+                                    placeholder="First Name" required="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="emergency_account-ln">Emergency Contact Last Name</label>
+                                <input class="form-control" type="text" id="emergency_account-ln"
+                                    placeholder="Last Name" required="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="emergency_account-email">E-mail Address</label>
+                                <input class="form-control" type="email" id="emergency_account-email"
+                                    placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="emergency_account-phone">Phone Number</label>
+                                <input class="form-control" type="text" id="emergency_account-phone"
+                                    value="+1 800" required="">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <hr class="mt-2 mb-3">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                <button class="btn btn-style-1 btn-primary" id="emergency_update_btn"
+                                    type="button" data-toast="" data-toast-position="topRight"
+                                    data-toast-type="success" data-toast-icon="fe-icon-check-circle"
+                                    data-toast-title="Success!"
+                                    data-toast-message="Your profile updated successfuly.">Update
+                                    Profile</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function password_form() {
+        document.getElementById("general_form_field").hidden = true;
+        document.getElementById("emergency_contact_field").hidden = true;
+        document.getElementById("address_form_field").hidden = true;
+
+        document.getElementById("password_form_field").hidden = false;
+    }
+
+    function emergency_contact_form() {
+        document.getElementById("general_form_field").hidden = true;
+        document.getElementById("password_form_field").hidden = true;
+        document.getElementById("address_form_field").hidden = true;
+
+        document.getElementById("emergency_contact_field").hidden = false;
+    }
+
+    function address_form() {
+        document.getElementById("general_form_field").hidden = true;
+        document.getElementById("password_form_field").hidden = true;
+        document.getElementById("emergency_contact_field").hidden = true;
+
+        document.getElementById("address_form_field").hidden = false;
+    }
+    
+    $("form").submit(function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: $(this).attr("action"),
+        method: $(this).attr("method"),
+        data: $(e.target).serializeArray(),
+      })
+        .done(() => {
+          location.reload();
+          return false;
+        })
+        .fail(console.error);
+    });
+
+</script>
+
+<%- include('partials/footer.ejs') %>

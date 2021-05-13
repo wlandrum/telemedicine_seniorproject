@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link
+      href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+      id="bootstrap-css"
+    />
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="/js/main.js"></script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <% if (typeof styles === 'object' && styles.length) {%> <%
+    styles.forEach(function (style) { %>
+    <link rel="stylesheet" href="/style/<%= style %>.css" />
+    <% }) } %>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <%- include('navbar.ejs', {active: typeof active !== "undefined" ? active :
+    undefined }) %> <%- include('notifications.ejs') %>
+  </body>
+</html>

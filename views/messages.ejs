@@ -1,0 +1,6 @@
+<%- include('partials/header.ejs', {title: "Messages", styles: ["home"],
+active: "home"}) %>
+
+<%- include(user.type === "doctor" ? "messages_doctor.ejs" : "messages_patient.ejs") %>
+
+<%- include('partials/footer.ejs') %>

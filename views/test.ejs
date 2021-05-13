@@ -1,0 +1,112 @@
+<%- include('partials/header.ejs', {title: "Home Page", styles: ["test"],
+active: "home"}) %>
+
+<!-- <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+  integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"
+  integrity="sha512-GDey37RZAxFkpFeJorEUwNoIbkTwsyC736KNSYucu1WJWFK9qTdzYub8ATxktr6Dwke7nbFaioypzbDOQykoRg=="
+  crossorigin="anonymous"
+></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+/> -->
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<body>
+  <form id="event-form" action="/api/events" method="post" role="form">
+    <!-- <input type="datetime" name="datetime" id="datetime" /> -->
+    <!-- <input type="datetime-local" id="datetime" name="datetime" /> -->
+    <input
+      class="flatpickr"
+      name="datetime"
+      type="text"
+      placeholder="Select Date.."
+      data-id="altinput"
+    />
+    <input type="text" name="name" id="name" />
+    <input type="text" name="description" id="description" />
+    <input
+      type="submit"
+      name="login-submit"
+      id="login-submit"
+      tabindex="4"
+      class="form-control btn btn-login"
+      value="Log In"
+    />
+  </form>
+
+  <!-- <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <div class="input-group date" id="datetimepicker1">
+            <input type="text" class="flatpickr flatpickr-input" />
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+        $(function () {
+            $("#datetimepicker1").datetimepicker({
+              stepping: 5,
+              minDate: new Date(),
+              daysOfWeekDisabled: [0, 6],
+              enabledHours: [9, 10, 11, 12, 13, 14, 15, 16],
+              allowInputToggle: true,
+            });
+
+        });
+      </script>
+    </div>
+  </div> -->
+
+  <!-- <input type="text" name="flatpickr" id="inp" /> -->
+
+  <script>
+    // $(function () {
+    //   $("#inp").flatpickr({
+    const fp = flatpickr(".flatpickr", {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i",
+      altInput: true,
+      altFormat: "m/d/Y h:i K",
+
+      minDate: "today",
+      minTime: "09:00",
+      maxTime: "16:30",
+
+      disable: [
+        // function (date) {
+        //   return date.getDay() === 0 || date.getDay() === 6;
+        // },
+        (date) => date.getDay() === 0 || date.getDay() === 6,
+      ],
+    });
+
+    $("form").submit(function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: $(this).attr("action"),
+        method: $(this).attr("method"),
+        data: $(e.target).serializeArray(),
+      })
+        .done(console.log)
+        .fail(console.error);
+    });
+    // });
+  </script>
+
+  <%- include('partials/footer.ejs') %>
+</body>

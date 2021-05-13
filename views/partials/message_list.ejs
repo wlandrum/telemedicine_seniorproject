@@ -1,0 +1,3 @@
+<% messages.forEach(function(message) { %>
+    <%- include(`messages/${user.type == "patient" ? "patient" : "doctor"}_message.ejs`, {message: message}); _%>
+<% }); %>

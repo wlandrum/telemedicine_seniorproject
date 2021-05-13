@@ -1,0 +1,10 @@
+<% const sent = message.sender_id == user.id ? true : false %> 
+
+<div class="<%= sent ? "outgoing" : "incoming" %>_msg">
+    <div class="<%= sent ? "outgoing" : "incoming" %>_msg_container">
+        <div class="<%= sent ? "sent" : "received" %>_msg">
+            <p><%= message.mes_content %></p>
+            <span class="time_date"><%= moment(message.date_created).format("llll") %></span>
+        </div>
+    </div>
+</div>

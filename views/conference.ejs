@@ -1,0 +1,27 @@
+<%- include('partials/header.ejs', {title: "Home Page", styles: [],
+active: "home"}) %>
+<style>
+	* {
+    background: #ffffff;
+    color: #000000;
+    text-align: center
+  }
+  
+  button {
+    background: #ffffff;
+    font-size: 20px;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background: #ffffff;
+  }
+  
+  .hidden {
+    display: none;
+  }
+</style>
+<%- include(user.type === "doctor" ? "doctor_conference.ejs" : "patient_conference.ejs") %>
+
+<%- include('partials/footer.ejs') %>
+

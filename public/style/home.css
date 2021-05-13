@@ -1,0 +1,44 @@
+h1 {
+  text-align: center;
+}
+h2 {
+}
+.center {
+  text-align: center;
+}
+#pic {
+  border-bottom: 5px solid #e7e7e7;
+}
+#intro {
+  margin-left: 200px;
+  margin-right: 200px;
+  padding: 20px;
+  max-width: 1500px;
+  min-width: 500px;
+  text-align: left;
+  border: 5px solid #e7e7e7;
+  border-top: none;
+  background-color: #f8f8f8;
+}
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+a.introLink:link, a.introLink:visited {
+  background-color: #263472;
+  color: white;
+  padding: 5px 25px;
+  text-decoration: none;
+  text-align: center;
+  display: inline-block;
+  border-radius: 10px;
+}
+a.introLink:hover {
+  color: white;
+  background-color: #2c3d85;
+  text-decoration: none;
+}
+#HIPAA {
+  padding-top: 10px;
+}

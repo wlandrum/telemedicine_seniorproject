@@ -1,0 +1,5 @@
+input[readonly] {
+  background-color: transparent !important;
+  border: 1px solid #c3c3c3 !important;
+  cursor: pointer !important;
+}
