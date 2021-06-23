@@ -42,7 +42,7 @@ router.post(
       }),
     oneOf(
       [
-        check("doctor").exists().notEmpty(),
+        check("dr").exists().notEmpty(),
         check("patient").exists().notEmpty(),
       ],
       "Please choose user type"
